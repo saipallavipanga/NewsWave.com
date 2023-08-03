@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Interactive Website</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>NewsWave</h1>
+    <div id="post-form">
+      <input type="text" id="username" placeholder="Username">
+      <textarea id="post" placeholder="Write your post here"></textarea>
+      <input type="file" id="file" accept="image/*, video/*, application/pdf, .doc, .docx, .txt">
+      <button onclick="submitPost()">Submit Post</button>
+    </div>
+    <div id="posts">
+      <!-- Posts will be dynamically added here using JavaScript -->
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

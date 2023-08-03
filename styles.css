@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #052e2f, #1a9088, #6a8b9c);
+    color: #333;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4a90e2;
+  }
+  
+  #post-form {
+    margin-bottom: 20px;
+  }
+  
+  #post-form input,
+  #post-form textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  #posts {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .post {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+  }
+  
+  .post .username {
+    font-weight: bold;
+    color: #4a90e2;
+  }
+  
+  .post .post-text {
+    margin-top: 8px;
+    font-size: 16px;
+  }
+  
+  .post .comment-list {
+    margin-top: 8px;
+    padding-left: 20px;
+    list-style: square;
+  }
+  
+  .post .comment {
+    margin-top: 4px;
+    font-style: italic;
+  }
+  
+  .post .file-preview {
+    display: block;
+    margin-top: 10px;
+    max-width: 100%;
+    max-height: 300px;
+  }
+  
+  /* Media queries for responsive design */
+  @media (max-width: 600px) {
+    .container {
+      max-width: 100%;
+      padding: 10px;
+    }
+  
+    #post-form input,
+    #post-form textarea,
+    #post-form button {
+      font-size: 14px;
+    }
+  
+    .post {
+      padding: 8px;
+    }
+  
+    .post .post-text {
+      font-size: 14px;
+    }
+  
+    .post .comment-list {
+      padding-left: 15px;
+    }
+  }
+  
