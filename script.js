@@ -1,10 +1,8 @@
-let posts = [];
-
 function submitPost() {
   const username = document.getElementById('username').value;
   const postText = document.getElementById('post').value;
   const fileInput = document.getElementById('file');
-  const file = fileInput.files[0]; // Get the first selected file (single file upload)
+  const file = fileInput.files[0];
 
   if (username.trim() === '' || postText.trim() === '') {
     alert('Username and post cannot be empty.');
@@ -14,91 +12,51 @@ function submitPost() {
   const post = {
     username,
     text: postText,
-    comments: [],
+    fileData: '',
   };
 
   if (file) {
     const reader = new FileReader();
 
     reader.onload = function (e) {
-      post.fileData = e.target.result; // Store the base64-encoded file data
-      posts.push(post);
-      savePostsToLocal();
-      updatePosts();
+      post.fileData = e.target.result;
+      savePostToServer(post);
     };
 
-    reader.readAsDataURL(file); // Read the file as a Data URL (base64-encoded)
+    reader.readAsDataURL(file);
   } else {
-    posts.push(post);
-    savePostsToLocal();
-    updatePosts();
+    savePostToServer(post);
   }
 }
 
-function updatePosts() {
-  const postsContainer = document.getElementById('posts');
-  postsContainer.innerHTML = '';
-
-  posts.forEach((post, index) => {
-    const postDiv = document.createElement('div');
-    postDiv.classList.add('post');
-
-    const usernameElem = document.createElement('span');
-    usernameElem.classList.add('username');
-    usernameElem.textContent = post.username;
-
-    const postTextElem = document.createElement('p');
-    postTextElem.textContent = post.text;
-
-    if (post.fileData) {
-      const filePreviewElem = document.createElement('img');
-      filePreviewElem.classList.add('file-preview');
-      filePreviewElem.src = post.fileData;
-      postDiv.appendChild(filePreviewElem);
-    }
-
-    const commentListElem = document.createElement('ul');
-    post.comments.forEach((comment) => {
-      const commentElem = document.createElement('li');
-      commentElem.classList.add('comment');
-      commentElem.textContent = comment;
-      commentListElem.appendChild(commentElem);
+function savePostToServer(post) {
+  fetch('http://localhost:3000/api/posts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(post),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      posts.push(data.post);
+      updatePosts();
+    })
+    .catch((error) => {
+      console.error('Error saving post:', error);
     });
-
-    const commentInputElem = document.createElement('input');
-    commentInputElem.placeholder = 'Write a comment...';
-
-    const commentButtonElem = document.createElement('button');
-    commentButtonElem.textContent = 'Post Comment';
-    commentButtonElem.onclick = () => {
-      const commentText = commentInputElem.value;
-      if (commentText.trim() !== '') {
-        post.comments.push(commentText);
-        savePostsToLocal();
-        updatePosts();
-      }
-    };
-
-    postDiv.appendChild(usernameElem);
-    postDiv.appendChild(postTextElem);
-    postDiv.appendChild(commentListElem);
-    postDiv.appendChild(commentInputElem);
-    postDiv.appendChild(commentButtonElem);
-
-    postsContainer.appendChild(postDiv);
-  });
 }
 
-function loadPostsFromLocal() {
-  const localPosts = localStorage.getItem('userPosts');
-  if (localPosts) {
-    posts = JSON.parse(localPosts);
-    updatePosts();
-  }
+function loadPostsFromServer() {
+  fetch('http://localhost:3000/api/posts')
+    .then((response) => response.json())
+    .then((data) => {
+      posts = data;
+      updatePosts();
+    })
+    .catch((error) => {
+      console.error('Error loading posts:', error);
+    });
 }
 
-function savePostsToLocal() {
-  localStorage.setItem('userPosts', JSON.stringify(posts));
-}
-
-loadPostsFromLocal();
+loadPostsFromServer();
